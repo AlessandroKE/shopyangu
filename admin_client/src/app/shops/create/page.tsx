@@ -48,11 +48,9 @@ import {
 } from "@/components/file-upload"
 import { createShop } from "./actions"
 import { createShopSchema } from "@/schema"
-import { Shop } from "@/types"
 
 
-
-export default function MyForm() {
+export default function CreateShop() {
 
   const [state, formAction, isPending] = useActionState(createShop, null);
 
@@ -74,8 +72,8 @@ export default function MyForm() {
   })
 
   useEffect(() => {
-    if(state && state.error) {
-        toast.error("An error occured", {description: state.error} );
+    if(state && !state.success) {
+        toast.error("An error occured", {description: state.message} );
       } else if(state) {
         toast.success("Form submitted successfully", {description: "Your shop has been created and saved."} );
       } 
@@ -99,7 +97,7 @@ export default function MyForm() {
                     type="text"
                     {...field} />
                   </FormControl>
-                  {!form.formState.errors.name && <FormDescription>What's the name of your shop?</FormDescription>}
+                  {!form.formState.errors.name && <FormDescription>What&apos;s the name of your shop?</FormDescription>}
                   <FormMessage />
                 </FormItem>
               )}
@@ -129,7 +127,7 @@ export default function MyForm() {
             <FormField
               control={form.control}
               {...form.register("logo")}
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Select a logo</FormLabel>
                   <FormControl>

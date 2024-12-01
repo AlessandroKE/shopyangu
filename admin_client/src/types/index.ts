@@ -18,3 +18,8 @@ export interface Product extends Entity {
     image: string,
     shopId: string,
 }
+
+export interface ServerActionState {
+    success: boolean
+    message: string
+}

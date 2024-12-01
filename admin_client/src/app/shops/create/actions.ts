@@ -1,12 +1,10 @@
 'use server'
 
 import { HttpClient } from "@/services/http";
-import { Shop } from "@/types";
+import { ServerActionState, Shop } from "@/types";
 
 
-
-export async function createShop (previousState: any, formData: FormData){
-
+export async function createShop (previousState: ServerActionState | null, formData: FormData){
     const httpClient = new HttpClient<Shop>()
 
     const shop = {
@@ -24,10 +22,12 @@ export async function createShop (previousState: any, formData: FormData){
             success: true,
             message: "Shop created successfully"
         }
-    } catch (error) {
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    catch (_) {
         return {
-            error: "An error occured while creating a shop."
+            success: false,
+            message: "An error occured while creating a shop. "
         }
     }
-
 }

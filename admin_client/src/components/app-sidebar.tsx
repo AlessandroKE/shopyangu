@@ -2,27 +2,21 @@
 
 import * as React from "react"
 import {
-  BookOpen,
-  Bot,
   CircleHelp,
   Command,
   Frame,
   HandCoins,
   House,
-  LifeBuoy,
   Map,
   PieChart,
   Send,
-  Settings2,
   ShoppingBasket,
-  SquareTerminal,
   Store,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
 import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
   SidebarContent,

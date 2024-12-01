@@ -7,13 +7,13 @@ export class HttpClient<T> {
        if (baseUrl) this.baseUrl = baseUrl
     }
 
-    async get<T>(path: string, queries: Record<string, any> | null = null) {
+    async get<T>(path: string, queries: Record<string, string | number> | null = null) {
         const response = await fetch(`${this.baseUrl}${path}${queries ? this.toQueryString(queries) : ''}`)
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return await response.json() as T
     }
     
-    async post(path: string, data: T, queries: Record<string, any> | null = null) {
+    async post(path: string, data: T, queries: Record<string, string | number> | null = null) {
         const response = await fetch(`${this.baseUrl}${path}${queries ? this.toQueryString(queries) : ''}`, {
             method: 'POST',
             headers: {
@@ -25,7 +25,7 @@ export class HttpClient<T> {
         return await response.json() as T
     }
     
-    async put(path: string, data: T, queries: Record<string, any> | null = null) {
+    async put(path: string, data: T, queries: Record<string, string | number> | null = null) {
         const response = await fetch(`${this.baseUrl}${path}${queries? this.toQueryString(queries) : ''}`, {
             method: 'PUT',
             headers: {
@@ -36,7 +36,7 @@ export class HttpClient<T> {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return await response.json() as T
     }
-    async patch<T>(path: string, data: Partial<T>, queries: Record<string, any> | null = null) {
+    async patch<T>(path: string, data: Partial<T>, queries: Record<string, string | number> | null = null) {
         const response = await fetch(`${this.baseUrl}${path}${queries? this.toQueryString(queries) : ''}`, {
             method: 'PATCH',
             headers: {
@@ -47,7 +47,7 @@ export class HttpClient<T> {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return await response.json() as T
     }
-    async delete(path: string, queries: Record<string, any> | null = null) {
+    async delete(path: string, queries: Record<string, string | number> | null = null) {
         const response = await fetch(`${this.baseUrl}${path}${queries? this.toQueryString(queries) : ''}`, {
             method: 'DELETE',
         })
@@ -55,7 +55,7 @@ export class HttpClient<T> {
     }
 
 
-    private toQueryString(params: Record<string, any>): string {
+    private toQueryString(params: Record<string, string | number>): string {
         return (
             "?" +
             Object.entries(params)

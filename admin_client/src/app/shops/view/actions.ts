@@ -3,7 +3,7 @@
 import { HttpClient } from "@/services/http"
 import { Shop } from "@/types"
 
-export async function getShops(queries: Record<string, any> = {}) {
+export async function getShops(queries: Record<string, string | number> = {}) {
     const httpClient = new HttpClient()
     
     try {

@@ -6,7 +6,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
@@ -29,7 +28,7 @@ const data = {
   }
 }
 
-export default function LayoutWithSidebar({children, params
+export default function LayoutWithSidebar({children,
 }: Readonly<{
   children: React.ReactNode;
   params: Promise<{[key:string]: string}>
