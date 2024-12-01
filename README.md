@@ -18,8 +18,8 @@ This repository contains the code for the Admin Panel of the ShopYangu platform,
 
 ## Tech Stack
 
-- **Frontend:** Next.js, Redux (for state management)
-- **Styling:** Tailwind CSS or Bootstrap (or any other preferred styling framework)
+- **Frontend:** Next.js
+- **Styling:** Tailwind CSS and Shadcn
 
 ---
 
@@ -68,14 +68,10 @@ Now, set up the front-end Admin Panel:
 
 3. Create a `.env` file (if necessary) to set up the API URL for the backend. Example:
 
-   ```env
-   NEXT_APP_API_URL=http://localhost:3000
-   ```
-
 4. Start the development server:
 
    ```bash
-   npm start
+   npm run shopyangu
    ```
 
    The Admin Panel should now be accessible at `http://localhost:3000`.
