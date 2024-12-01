@@ -1,0 +1,16 @@
+{
+  "name": "shopyangu-json_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Alessandro Koome",
+  "license": "ISC",
+  "dependencies": {
+    "json-server": "^0.17.4",
+    "json5": "^2.2.3"
+  }
+}
