@@ -1,29 +1,22 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Shop } from "@/components/dashboard/lib/mockData"
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend, Cell } from "recharts"
+import { StockStatus } from "@/types"
+import { useEffect, useState } from "react"
 
-interface StockStatusDistributionProps {
-  shops: Shop[]
-}
 
-export function StockStatusDistribution({ shops }: StockStatusDistributionProps) {
-  const stockStatus = shops.flatMap((shop) => shop.products).reduce(
-    (acc, product) => {
-      if (product.stock === 0) acc.outOfStock++
-      else if (product.stock <= 5) acc.lowStock++
-      else acc.inStock++
-      return acc
-    },
-    { inStock: 0, outOfStock: 0, lowStock: 0 }
-  )
+export function StockStatusDistributionComponent({stockStatus}: {stockStatus:StockStatus}) {
+  
+  const [data, setData] = useState<{name: string, value: number, color: string}[]>([])
 
-  const data = [
-    { name: "In Stock", value: stockStatus.inStock, color: "#22c55e" },
-    { name: "Low Stock", value: stockStatus.lowStock, color: "#f97316" },
-    { name: "Out of Stock", value: stockStatus.outOfStock, color: "#ef4444" },
-  ]
+  useEffect(()=> {
+    setData([
+      { name: "In Stock", value: stockStatus.inStock, color: "#22c55e" },
+      { name: "Low Stock", value: stockStatus.lowStock, color: "#f97316" },
+      { name: "Out of Stock", value: stockStatus.outOfStock, color: "#ef4444" },
+    ])
+  }, [stockStatus])
 
   return (
     <Card className="col-span-4">
