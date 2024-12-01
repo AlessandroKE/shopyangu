@@ -22,9 +22,9 @@ interface IBreadCrumb {href: string, label: string}
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "Alessandro Koome",
+    email: "koomealessandro@gmail.com",
+    avatar: "https://media.licdn.com/dms/image/v2/D4D03AQEesYEHRg9pDQ/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1731357747203?e=1738800000&v=beta&t=pV8XjpnQWfAO9PnrwHMZlPCxiM2TB8RMpaXymsEImV8",
   }
 }
 
@@ -83,7 +83,7 @@ export default function LayoutWithSidebar({children,
             </div>
           </div>
         </header>
-        <main className="p-2">
+        <main className="p-2 h-full">
           {children}
         </main>
       </SidebarInset>

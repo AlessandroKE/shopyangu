@@ -31,7 +31,7 @@ export function OverviewMetrics({ totalShops, totalProducts, totalValue, totalSt
           <CardTitle className="text-sm font-medium">Total Value</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">${totalValue.toFixed(2)}</div>
+          <div className="text-2xl font-bold">KES {totalValue.toFixed(2)}</div>
         </CardContent>
       </Card>
       <Card>
