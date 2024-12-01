@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "shopyangu": "concurrently \"npm run serve:api\" \"npm run serve:next\"",
+    "serve:next": "next dev",
+    "serve:api":"json-server db.json5 --port 8000"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -26,6 +29,8 @@
     "@vercel/speed-insights": "^1.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "concurrently": "^9.1.0",
+    "json-server": "^1.0.0-beta.3",
     "lucide-react": "^0.462.0",
     "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",
