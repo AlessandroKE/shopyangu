@@ -9,12 +9,8 @@ import {
   toast
 } from "sonner"
 import {
-  useForm,
   UseFormReturn,
 } from "react-hook-form"
-import {
-  zodResolver
-} from "@hookform/resolvers/zod"
 import * as z from "zod"
 import {
   cn
@@ -51,15 +47,15 @@ import {
 import { ServerActionState } from "@/types"
 import { createShopSchema } from "@/schema"
 
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function ShopForm({action, form, editMode}: {
   action: (previousState: ServerActionState | null, data: z.infer < typeof createShopSchema >) => Promise<ServerActionState>,
   form: UseFormReturn<{
     id?: string
     name: string;
     description: string;
-    logo?: string | null;
-}, any, undefined>,
+    logo?: string | null; // eslint-disable-next-line @typescript-eslint/no-explicit-any
+}, any, undefined>, 
   editMode: boolean
 }) {
 

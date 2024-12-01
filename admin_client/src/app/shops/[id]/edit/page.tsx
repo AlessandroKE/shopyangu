@@ -34,11 +34,10 @@ export default function EditShop() {
     getShop(id as string).then((data) => {
       if (data) {
         form.reset(data);
-        console.log('data', data)
         setIs404(false);
       } else {
         setIs404(true);
-        console.error("No product found with id:", id);
+        console.error("No shop found with id:", id);
       }
       setLoading(false);
     });

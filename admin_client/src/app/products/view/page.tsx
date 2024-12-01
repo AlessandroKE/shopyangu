@@ -22,6 +22,7 @@ import {
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -39,6 +40,7 @@ import * as Actions from "./actions"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { formatDate } from "@/lib/utils"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 
 export default function ProductsView() {
@@ -205,6 +207,10 @@ export default function ProductsView() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
+                            <DropdownMenuItem className="text-blue-500 cursor-pointer" onClick={() => editProduct(product.id!)}>
+                                Edit Product
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator/>
                             <DropdownMenuItem className="text-red-500 cursor-pointer" onClick={() => deleteProduct(product.id!)}>
                                 Delete Product
                             </DropdownMenuItem>
@@ -214,6 +220,11 @@ export default function ProductsView() {
             },
         },
     ]
+
+    const router = useRouter()
+    const editProduct = (id: string) => {
+      router.push('/products/' + id + '/edit')
+    }
 
     const deleteProduct = (id: string) => {
         Actions.deleteProduct(id).then((res) => {

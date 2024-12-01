@@ -2,7 +2,7 @@
 
 import { createProductSchema } from "@/schema";
 import { HttpClient } from "@/services/http";
-import { ServerActionState, Product } from "@/types";
+import { ServerActionState, Product, Shop } from "@/types";
 import { z } from "zod";
 
 
@@ -12,8 +12,8 @@ export async function createProduct (previousState: ServerActionState | null, da
     const product = {
         name: data.name,
         description: data.description,
-        price: parseFloat(data.price),
-        stock: parseInt(data.stock),
+        price: data.price,
+        stock: data.stock,
         shopId: data.shopId,
         image: '',
         createdAt: new Date().toISOString(),
@@ -21,6 +21,7 @@ export async function createProduct (previousState: ServerActionState | null, da
     }
 
     try {
+        await httpClient.get<Shop>('shops/' + data.shopId)
         await httpClient.post('products', product)
         return {
             success: true,

@@ -9,10 +9,11 @@ export const createShopSchema = z.object({
   });
 
 export const createProductSchema = z.object({
+  id: z.string().optional(),
   name: z.string().min(3),
-  price: z.string().min(1),
+  price: z.coerce.number().min(1),
   description: z.string().min(30).max(2048),
-  stock: z.string().min(0),
-  shopId: z.string(),
+  stock: z.coerce.number().min(0),
+  shopId: z.string().nonempty(),
   image: z.string().nullable().optional()
 });

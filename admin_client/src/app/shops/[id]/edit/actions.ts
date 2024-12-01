@@ -12,13 +12,12 @@ export async function editShop (previousState: ServerActionState | null, data: z
     const shop = {
         name: data.name,
         description: data.description,
-        createdAt: new Date().toISOString(),
-        modifiedAt: null,
+        modifiedAt: new Date().toISOString(),
         logo: null
     }
 
     try {
-        await httpClient.put('shops/' + data.id, shop)
+        await httpClient.patch('shops/' + data.id, shop)
         return {
             success: true,
             message: "Shop editted successfully"
