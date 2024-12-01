@@ -64,6 +64,7 @@ const data = {
       title: "Products",
       url: "/products",
       icon: ShoppingBasket,
+      isActive: true,
       items: [
         {
           title: "Create Product",

@@ -22,6 +22,7 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -39,6 +40,7 @@ import * as Actions  from "./actions"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { formatDate } from "@/lib/utils"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 
 export default function ShopsView() {
@@ -183,6 +185,10 @@ export default function ShopsView() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
+              <DropdownMenuItem className="text-blue-500 cursor-pointer" onClick={() => editShop(shop.id!)}>
+                  Edit Shop
+              </DropdownMenuItem>
+              <DropdownMenuSeparator/>
               <DropdownMenuItem className="text-red-500 cursor-pointer" onClick={() => deleteShop(shop.id!)}>
                   Delete Shop
               </DropdownMenuItem>
@@ -192,6 +198,11 @@ export default function ShopsView() {
       },
     },
   ]
+
+  const router = useRouter()
+  const editShop = (id: string) => {
+    router.push('/shops/' + id + '/edit')
+  }
   
   const deleteShop = (id: string) => {
     Actions.deleteShop(id).then((res) => {
@@ -207,7 +218,7 @@ export default function ShopsView() {
     console.log(err)
   });
   }
-// {0: true, 1: true}
+
   const deleteShops = () => {
     setIsDeletingShops(true)
     const trueKeys = Object.keys(rowSelection).filter(key => rowSelection[parseInt(key)]);
