@@ -334,7 +334,7 @@ export default function ShopsView() {
               </TableRow>
             ) : table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="even:bg-gray-100">
+                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="even:bg-gray-100 dark:even:bg-gray-800">
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(

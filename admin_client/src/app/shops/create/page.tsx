@@ -1,5 +1,6 @@
 "use client"
 import {
+  startTransition,
     useActionState,
     useEffect,
   useState
@@ -57,9 +58,9 @@ export default function CreateShop() {
   const [files, setFiles] = useState < File[] | null > (null);
 
   const dropZoneConfig = {
-    maxFiles: 5,
+    maxFiles: 1,
     maxSize: 1024 * 1024 * 4,
-    multiple: true,
+    multiple: false,
   };
   const form = useForm < z.infer < typeof createShopSchema >> ({
     mode: "all",
@@ -81,7 +82,7 @@ export default function CreateShop() {
 
   return (
     <Form {...form}>
-      <form action={(formData: FormData) =>  {form.handleSubmit(()=> formAction(formData))}}
+      <form onSubmit={form.handleSubmit((data)=> startTransition(()=> formAction(data)))}
         className="space-y-5 max-w-3xl mx-auto py-4">
         <div className="grid grid-cols-12 gap-4">
           <div className="col-span-12">

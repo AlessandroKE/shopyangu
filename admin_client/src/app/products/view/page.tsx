@@ -275,7 +275,7 @@ export default function ProductsView() {
         <div className="w-full">
             <div className="flex items-center py-4">
                 <Input
-                    placeholder="Filter by shop name..."
+                    placeholder="Filter by product name.."
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("name")?.setFilterValue(event.target.value)
@@ -353,7 +353,7 @@ export default function ProductsView() {
                             </TableRow>
                         ) : table.getRowModel().rows.length ? (
                             table.getRowModel().rows.map((row) => (
-                                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="even:bg-gray-100">
+                                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="even:bg-gray-100 dark:even:bg-gray-800">
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
                                             {flexRender(

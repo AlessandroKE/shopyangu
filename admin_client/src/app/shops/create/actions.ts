@@ -1,16 +1,17 @@
 'use server'
 
+import { createShopSchema } from "@/schema";
 import { HttpClient } from "@/services/http";
 import { ServerActionState, Shop } from "@/types";
+import { z } from "zod";
 
 
-export async function createShop (previousState: ServerActionState | null, formData: FormData){
+export async function createShop (previousState: ServerActionState | null, data: z.infer < typeof createShopSchema >){
     const httpClient = new HttpClient<Shop>()
 
     const shop = {
-        name: formData.get('name') as string,
-        description: formData.get('description') as string,
-        //logo: formData.get('logo') as string,
+        name: data.name,
+        description: data.description,
         createdAt: new Date().toISOString(),
         modifiedAt: null,
         logo: null
