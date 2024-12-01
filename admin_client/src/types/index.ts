@@ -17,6 +17,7 @@ export interface Product extends Entity {
     description: string,
     image: string,
     shopId: string,
+    shopName?: string,
 }
 
 export interface ServerActionState {
