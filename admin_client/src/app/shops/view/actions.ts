@@ -46,8 +46,9 @@ export async function deleteShops(shopIds: string[]){
                 const shopProducts = await httpClient.get<Product[]>('products', {shopId})
                 if(shopProducts.length) {
                     erroredIds.push(shopId)
+                } else {
+                    await httpClient.delete(`shops/${shopId}`)
                 }
-                await httpClient.delete(`shops/${shopId}`)
             } catch {
                 erroredIds.push(shopId)
             }
