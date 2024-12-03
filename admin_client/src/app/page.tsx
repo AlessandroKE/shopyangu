@@ -9,7 +9,6 @@ import { Metrics } from "@/types"
 import { Loader2 } from "lucide-react"
 
 export default function DashboardPage() {
-  // const shops = generateMockData(20, 50)
   const [metrics, setMetrics] = useState<Metrics | null>(null)
 
   useEffect(()=> {
