@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description: "ShopYangu is an e-commerce platform connecting users with diverse shops and products, offering a seamless and secure shopping experience.",
 };
 
-export const revalidate = 0
+
 export default function RootLayout({
   children, params
 }: Readonly<{
