@@ -259,7 +259,7 @@ export default function ProductForm({action, form, editMode}: {
               :
             <FormField
               control={form.control}
-              {...form.register('image')}
+              name='image'
               render={() => (
                 <FormItem>
                   <FormLabel>Image</FormLabel>
