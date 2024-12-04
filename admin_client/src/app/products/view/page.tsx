@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import * as React from "react"
 import {
@@ -34,17 +34,19 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Product } from "@/types"
+import { Product, Shop } from "@/types"
 import { useEffect, useState } from "react"
 import * as Actions from "./actions"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { formatDate } from "@/lib/utils"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { getShops } from "@/app/shops/view/actions"
 
 
 export default function ProductsView() {
     const [products, setProducts] = useState<Product[]>([])
+    const [shops, setShops] = useState<Shop[]>([])
     const [loadingProducts, setLoadingProducts] = useState(true)
     const [isDeletingProducts, setIsDeletingProducts] = useState(false);
     const [sorting, setSorting] = React.useState<SortingState>([])
@@ -55,11 +57,22 @@ export default function ProductsView() {
         React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState<{ [key: number]: boolean }>({})
 
+    // const [filters, setFilters] = useState()
     useEffect(() => {
         Actions.getProducts().then(products => {
             setProducts(products as Product[])
         }).finally(() => setLoadingProducts(false))
     }, [])
+
+    useEffect(() => {
+        getShops().then(shops => {
+            setShops(shops as Shop[])
+        })
+      }, [])
+
+    useEffect(()=> {
+        setProducts(products.map(product => {return {...product, shopName: shops[+product.shopId].name}}))
+    }, [shops])
 
 
     const columns: ColumnDef<Product>[] = [
@@ -161,6 +174,21 @@ export default function ProductsView() {
             cell: ({ row }) => <div className="text-center">{row.getValue("stock")}</div>,
         },
         {
+            accessorKey: "shopName",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Shop Name
+                        <ArrowUpDown />
+                    </Button>
+                )
+            },
+            cell: ({ row }) => <div className="lowercase text-center">{row.getValue("shopName")}</div>,
+        },
+        {
             accessorKey: "createdAt",
             header: ({ column }) => {
                 return (
@@ -188,7 +216,7 @@ export default function ProductsView() {
                     </Button>
                 )
             },
-            cell: ({ row }) => <div className="text-center">{formatDate(row.getValue("modifiedAt"))}</div>,
+            cell: ({ row }) => <div className="text-center">{row.getValue("modifiedAt") ? formatDate(row.getValue("modifiedAt")) : '-'}</div>,
         },
     
         {
@@ -284,15 +312,61 @@ export default function ProductsView() {
 
     return (
         <div className="w-full">
-            <div className="flex items-center py-4">
-                <Input
-                    placeholder="Filter by product name.."
-                    value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("name")?.setFilterValue(event.target.value)
-                    }
-                    className="max-w-sm"
-                />
+            <div className="flex items-start flex-wrap md:flex-nowrap pt-4 pb-1 gap-1">
+                <div className="w-full flex flex-col gap-1">
+                    <div className="flex gap-2 items-center flex-wrap w-full">
+                        <Input
+                            placeholder="Filter by product name.."
+                            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+                            onChange={(event) =>
+                                table.getColumn("name")?.setFilterValue(event.target.value)
+                            }
+                            className="max-w-sm"
+                        />
+                        <Input
+                            placeholder="Filter by shop name.."
+                            value={(table.getColumn("shopName")?.getFilterValue() as string) ?? ""}
+                            onChange={(event) =>
+                                table.getColumn("shopName")?.setFilterValue(event.target.value)
+                            }
+                            className="max-w-sm"
+                        />
+                    </div>
+                    {/* <div className="grid grid-cols-12 col-span-12 w-full gap-2">
+                        <Input
+                            placeholder="Lowest Price"
+                            value={(table.getColumn("price")?.getFilterValue() as number)}
+                            onChange={(event) =>
+                                table.getColumn("price")?.setFilterValue((itemValue: any) => event.target.value ? itemValue >= event.target.value : itemValue)
+                            }
+                            className="col-span-6 md:col-span-3"
+                        />
+                        <Input
+                            placeholder="Highest Price"
+                            value={(table.getColumn("price")?.getFilterValue() as string) ?? ""}
+                            onChange={(event) =>
+                                table.getColumn("price")?.setFilterValue(event.target.value)
+                            }
+                            className="col-span-6 md:col-span-3"
+                        />
+                        <Input
+                            placeholder="Minimum Stock"
+                            value={(table.getColumn("price")?.getFilterValue() as number) ?? ""}
+                            onChange={(event) =>
+                                table.getColumn("price")?.setFilterValue(event.target.value)
+                            }
+                            className="col-span-6 md:col-span-3"
+                        />
+                        <Input
+                            placeholder="Maximum Stock"
+                            value={(table.getColumn("price")?.getFilterValue() as string) ?? ""}
+                            onChange={(event) =>
+                                table.getColumn("price")?.setFilterValue(event.target.value)
+                            }
+                            className="col-span-6 md:col-span-3"
+                        />
+                    </div> */}
+                </div>
                 <div className="ml-auto flex items-center gap-2 flex-wrap">
                     {(Object.keys(rowSelection).filter(key => rowSelection[parseInt(key)]).length !== 0) &&
                         <Button variant="outline" className="border-red-500 text-red-500" onClick={deleteProducts} disabled={isDeletingProducts}>
@@ -319,12 +393,12 @@ export default function ProductsView() {
                                 .map((column) => {
                                     return (
                                         <DropdownMenuCheckboxItem
-                                            key={column.id}
-                                            className="capitalize"
-                                            checked={column.getIsVisible()}
-                                            onCheckedChange={(value) =>
-                                                column.toggleVisibility(!!value)
-                                            }
+                                        key={column.id}
+                                        className="capitalize"
+                                        checked={column.getIsVisible()}
+                                        onCheckedChange={(value) =>
+                                            column.toggleVisibility(!!value)
+                                        }
                                         >
                                             {column.id}
                                         </DropdownMenuCheckboxItem>
@@ -334,6 +408,7 @@ export default function ProductsView() {
                     </DropdownMenu>
                 </div>
             </div>
+            {/* <ProductFiltersForm shops={shops} /> */}
             <div className="rounded-md border">
                 <Table>
                     <TableHeader>

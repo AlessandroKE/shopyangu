@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import * as React from "react"
 import {
@@ -152,7 +152,7 @@ export default function ShopsView() {
             </Button>
           )
         },
-        cell: ({ row }) => <div className="text-center">{formatDate(row.getValue("modifiedAt"))}</div>,
+        cell: ({ row }) => <div className="text-center">{row.getValue("modifiedAt") ? formatDate(row.getValue("modifiedAt")) : '-'}</div>,
       },
   //   {
   //     accessorKey: "amount",

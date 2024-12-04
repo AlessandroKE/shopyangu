@@ -1,4 +1,4 @@
-"use server"
+'use server'
 
 import { HttpClient } from "@/services/http"
 import { Product } from "@/types"

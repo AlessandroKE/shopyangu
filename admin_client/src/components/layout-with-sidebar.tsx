@@ -37,7 +37,6 @@ export default function LayoutWithSidebar({children,
   const path = usePathname()
 
   const [crumbs, setCrumbs] = useState<IBreadCrumb[]>([])
-  console.log(path)
   useEffect(()=> {
     const crumbsList = path.split("/").filter(crumb => crumb.length)
     const formattedCrumbs: IBreadCrumb[] = []
@@ -45,7 +44,6 @@ export default function LayoutWithSidebar({children,
       formattedCrumbs.push(
         {label: crumbsList[i].toUpperCase(), href: '/'+ crumbsList.slice(0, i+1).join('/')}
       )
-     // console.log('paths', formattedCrumbs)
       setCrumbs(formattedCrumbs)
     }
   }, [path])
