@@ -71,7 +71,7 @@ export default function ProductsView() {
       }, [])
 
     useEffect(()=> {
-        setProducts(products.map(product => {return {...product, shopName: shops[+product.shopId].name}}))
+        setProducts(products.map(product => {return {...product, shopName: shops.find(shop => shop.id == product.shopId)?.name ?? '-'}}))
     }, [shops])
 
 
