@@ -13,7 +13,7 @@ export async function editShop (previousState: ServerActionState | null, data: z
         name: data.name,
         description: data.description,
         modifiedAt: new Date().toISOString(),
-        logo: null
+        logo: data.logo ?? null
     }
 
     try {

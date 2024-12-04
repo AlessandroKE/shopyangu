@@ -46,6 +46,9 @@ import {
 } from "@/components/file-upload"
 import { ServerActionState } from "@/types"
 import { createShopSchema } from "@/schema"
+import { uploadImage } from "@/app/actions"
+import { AspectRatio } from "./ui/aspect-ratio"
+import Image from "next/image"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function ShopForm({action, form, editMode}: {
@@ -62,6 +65,7 @@ export default function ShopForm({action, form, editMode}: {
   const [state, formAction, isPending] = useActionState(action, null);
 
   const [files, setFiles] = useState < File[] | null > (null);
+  const [currentLogo, setCurrentLogo] = useState(form.getValues().logo)
 
   const dropZoneConfig = {
     maxFiles: 1,
@@ -73,13 +77,25 @@ export default function ShopForm({action, form, editMode}: {
     if(state && !state.success) {
         toast.error("An error occured", {description: state.message} );
       } else if(state) {
-        toast.success("Form submitted successfully.", {description: "Your shop has been" + editMode ? "edit." : "created and saved."} );
+        toast.success("Form submitted successfully.", {description: "Your shop has been " + (editMode ? "editted." : "created and saved.")} );
       } 
   },[state]);
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit((data)=> startTransition(()=> formAction(data)))}
+      <form onSubmit={form.handleSubmit(async (data)=> {
+        let logo = data.logo
+        if(files?.length) {
+          const res = await uploadImage(files[0], 'logos')
+          if(!res.success) {
+            toast.error('Try again. Unable to upload logo')
+            return
+          } else {
+            logo = res.url
+          }
+        }
+        startTransition(()=> formAction({...data, logo}))
+      })}
         className="space-y-5 max-w-3xl mx-auto py-4">
         <div className="grid grid-cols-12 gap-4">
           <div className="col-span-12">
@@ -122,9 +138,22 @@ export default function ShopForm({action, form, editMode}: {
           )}
         />
         
+            {currentLogo ?
+                <>
+                  <AspectRatio ratio={16 / 9} className="bg-muted">
+                    <Image
+                      src={form.getValues().logo!}
+                      alt="Shop logo"
+                      fill
+                      className="h-full w-full rounded-md object-cover"
+                    />
+                  </AspectRatio>
+                  <Button type="button" variant="outline" className="text-red-500 border-red-500" onClick={()=>{form.setValue('logo', null); setCurrentLogo(null)}}>remove image</Button>
+                </>
+              :
             <FormField
               control={form.control}
-              {...form.register("logo")}
+              name="logo"
               render={() => (
                 <FormItem>
                   <FormLabel>Select a logo</FormLabel>
@@ -166,7 +195,7 @@ export default function ShopForm({action, form, editMode}: {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            />}
             <div className="flex justify-end">
                 <Button type="submit" disabled={form.formState.isSubmitting || isPending || !form.formState.isValid}>
                   {form.formState.isSubmitting || isPending && <Loader2 className="animate-spin"></Loader2>}

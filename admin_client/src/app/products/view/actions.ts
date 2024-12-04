@@ -8,7 +8,7 @@ export async function getProducts(queries: Record<string, string | number> = {})
     const httpClient = new HttpClient()
     
     try {
-        return await httpClient.get<Product[]>('products', queries)
+        return await httpClient.get<Product[]>('products', {...queries, _sort:'createdAt', _order:'desc'})
     } catch (error) {
         return {error}
     }

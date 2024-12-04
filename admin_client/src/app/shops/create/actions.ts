@@ -14,7 +14,7 @@ export async function createShop (previousState: ServerActionState | null, data:
         description: data.description,
         createdAt: new Date().toISOString(),
         modifiedAt: null,
-        logo: null
+        logo: data.logo ?? null
     }
 
     try {
@@ -24,8 +24,7 @@ export async function createShop (previousState: ServerActionState | null, data:
             message: "Shop created successfully"
         }
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    catch (_) {
+    catch {
         return {
             success: false,
             message: "An error occured while creating a shop. "

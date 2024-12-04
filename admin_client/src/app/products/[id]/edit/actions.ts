@@ -15,7 +15,7 @@ export async function updateProduct (previousState: ServerActionState | null, da
         price: data.price,
         stock: data.stock,
         shopId: data.shopId,
-        image: '',
+        image: data.image ?? '',
         modifiedAt: new Date().toISOString(),
     }
 

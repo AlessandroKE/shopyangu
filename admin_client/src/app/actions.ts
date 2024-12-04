@@ -2,6 +2,9 @@
 
 import { HttpClient } from '@/services/http';
 import { Product, Shop } from '@/types';
+import { put } from '@vercel/blob' 
+import path, { dirname } from "path";
+import { mkdir, writeFile } from "fs/promises";
 
 
 export async function getDashboardMetrics() {
@@ -43,3 +46,32 @@ export async function getDashboardMetrics() {
     topShopsByStock,
   };
 }
+
+
+export async function uploadImage(file: File, prefix: string) {
+
+  if (!file) {
+    return { error: 'No file selected' }
+  }
+
+  try {
+    if(process.env.NODE_ENV == 'production') {
+      const blob = await put(`${prefix}/${+new Date()}-${file.name.replaceAll(" ", "_")}`, file, {
+        access: 'public',
+      })
+      return { success: true, url: blob.url, message: 'Upload successful' }
+    } else {
+      const buffer = Buffer.from(await file.arrayBuffer());
+      const filename =  file.name.replaceAll(" ", "_");
+      const filePath = path.join(process.cwd(), `public/local/assets/${prefix}/` + filename)
+      await mkdir(dirname(filePath), { recursive: true })
+      await writeFile(filePath,buffer);
+      return { success: true, url: `/local/assets/${prefix}/` + filename, message: 'Upload successful' }
+    }
+
+  } catch (error) {
+    console.error(error)
+    return { success: false, message: 'Image upload failed' }
+  }
+}
+

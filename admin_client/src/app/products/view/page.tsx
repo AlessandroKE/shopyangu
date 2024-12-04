@@ -128,12 +128,12 @@ export default function ProductsView() {
                     </Button>
                 )
             },
-            cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
+            cell: ({ row }) => <div className="lowercase px-4">{row.getValue("name")}</div>,
         },
         {
             accessorKey: "description",
             header: 'Description',
-            cell: ({ row }) => <div className="lowercase">{row.getValue("description")}</div>,
+            cell: ({ row }) => <div className="lowercase max-w-80 truncate">{row.getValue("description")}</div>,
         },
         {
             accessorKey: "price",
@@ -186,7 +186,7 @@ export default function ProductsView() {
                     </Button>
                 )
             },
-            cell: ({ row }) => <div className="lowercase text-center">{row.getValue("shopName")}</div>,
+            cell: ({ row }) => <div className="lowercase px-4">{row.getValue("shopName")}</div>,
         },
         {
             accessorKey: "createdAt",

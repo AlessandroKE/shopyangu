@@ -52,6 +52,9 @@ import { createProductSchema } from "@/schema"
 import { ServerActionState, Shop } from "@/types"
 import { getShops } from "@/app/shops/view/actions"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import { uploadImage } from "@/app/actions"
+import { AspectRatio } from "./ui/aspect-ratio"
+import Image from 'next/image'
 
 export default function ProductForm({action, form, editMode}: {
     action: (previousState: ServerActionState | null, data: z.infer < typeof createProductSchema >) => Promise<ServerActionState>,
@@ -69,6 +72,7 @@ export default function ProductForm({action, form, editMode}: {
 
   const [state, formAction, isPending] = useActionState(action, null);
   const [files, setFiles] = useState < File[] | null > (null);
+  const [currentImage, setCurrentImage] = useState(form.getValues().image)
 
   const [shops, setShops] = useState<Shop[]>([])
 
@@ -82,7 +86,7 @@ export default function ProductForm({action, form, editMode}: {
     if(state && !state.success) {
         toast.error("An error occured", {description: state.message} );
       } else if(state) {
-        toast.success("Form submitted successfully", {description: "Your product has been " + editMode ? "edited." : "created and saved."} );
+        toast.success("Form submitted successfully", {description: "Your product has been " + (editMode ? "edited." : "created and saved.")} );
       } 
   },[state]);
 
@@ -94,7 +98,19 @@ export default function ProductForm({action, form, editMode}: {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit((data) => startTransition(()=> formAction(data)))}
+      <form onSubmit={form.handleSubmit(async (data)=> {
+        let image = data.image
+        if(files?.length) {
+          const res = await uploadImage(files[0], 'images')
+          if(!res.success) {
+            toast.error('Try again. Unable to upload image')
+            return
+          } else {
+            image = res.url
+          }
+        }
+        startTransition(()=> formAction({...data, image}))
+      })}
      className="space-y-8 max-w-3xl mx-auto py-10">
         
         <div className="grid grid-cols-12 gap-4">
@@ -226,6 +242,21 @@ export default function ProductForm({action, form, editMode}: {
           )}
         />
         
+        {currentImage ?
+                <>
+                  <AspectRatio ratio={16 / 9} className="bg-muted">
+                    <Image
+                      src={form.getValues().image!}
+                      alt="Product image"
+                      fill
+                      className="h-full w-full rounded-md object-cover"
+                    />
+                  </AspectRatio>
+                  <Button type="button" variant="outline" className="text-red-500 border-red-500" onClick={()=>{form.setValue('image', null); setCurrentImage(null)}}>
+                    remove image
+                  </Button>
+                </>
+              :
             <FormField
               control={form.control}
               {...form.register('image')}
@@ -271,6 +302,7 @@ export default function ProductForm({action, form, editMode}: {
                 </FormItem>
               )}
             />
+          }
         <div className="flex justify-end items-center gap-2">
           <Button type="submit" disabled={form.formState.isSubmitting || isPending || !form.formState.isValid}>
             {form.formState.isSubmitting || isPending && <Loader2 className="animate-spin"></Loader2>}

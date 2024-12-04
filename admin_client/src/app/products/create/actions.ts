@@ -15,7 +15,7 @@ export async function createProduct (previousState: ServerActionState | null, da
         price: data.price,
         stock: data.stock,
         shopId: data.shopId,
-        image: '',
+        image: data.image ?? '',
         createdAt: new Date().toISOString(),
         modifiedAt: null,
     }
